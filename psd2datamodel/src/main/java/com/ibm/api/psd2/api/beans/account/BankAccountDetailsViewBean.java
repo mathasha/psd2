@@ -16,7 +16,7 @@ import com.ibm.api.psd2.api.beans.Visitor;
 public class BankAccountDetailsViewBean implements Serializable
 {
 
-	private static Map<String, Visitor> visitors;
+	private Map<String, Visitor> visitors;
 	private String id;
 	private String label;
 	private String number;

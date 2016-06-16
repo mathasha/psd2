@@ -176,6 +176,6 @@ public class BankAccountDetailsBean implements Serializable
 		{
 			e.printStackTrace();
 		}
-		return null;
+		return "";
 	}
 }

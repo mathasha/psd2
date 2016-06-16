@@ -116,6 +116,6 @@ public class TxnRequestDetailsBean implements Serializable
 		{
 			e.printStackTrace();
 		}
-		return null;
+		return "";
 	}
 }
