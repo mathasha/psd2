@@ -41,7 +41,6 @@ public class MongoDocumentParser
 
 	private <T> Method getMethod(T t, String methodName) throws Exception
 	{
-		Class<?> c = null;
 		Method[] ms = t.getClass().getMethods();
 		Method rm = null;
 		for (Method m : ms)
