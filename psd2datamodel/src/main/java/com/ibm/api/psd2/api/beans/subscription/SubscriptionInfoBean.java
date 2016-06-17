@@ -2,6 +2,7 @@ package com.ibm.api.psd2.api.beans.subscription;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
 public class SubscriptionInfoBean implements Serializable
 {
@@ -9,10 +10,11 @@ public class SubscriptionInfoBean implements Serializable
 	private String username;
 	private String accountId;
 	private String bank_id;
+	private String clientId;
 	private ArrayList<ViewIdBean> viewIds;
 	
-	private ArrayList<TransactionRequestTypeBean> transaction_request_types;
-	private ArrayList<TransactionLimitBean> limits;
+	private List<TransactionRequestTypeBean> transaction_request_types;
+	private List<TransactionLimitBean> limits;
 	public String getUsername()
 	{
 		return username;
@@ -21,20 +23,20 @@ public class SubscriptionInfoBean implements Serializable
 	{
 		this.username = username;
 	}
-	public ArrayList<TransactionRequestTypeBean> getTransaction_request_types()
+	public List<TransactionRequestTypeBean> getTransaction_request_types()
 	{
 		return transaction_request_types;
 	}
 	public void setTransaction_request_types(
-			ArrayList<TransactionRequestTypeBean> transaction_request_types)
+			List<TransactionRequestTypeBean> transaction_request_types)
 	{
 		this.transaction_request_types = transaction_request_types;
 	}
-	public ArrayList<TransactionLimitBean> getLimits()
+	public List<TransactionLimitBean> getLimits()
 	{
 		return limits;
 	}
-	public void setLimits(ArrayList<TransactionLimitBean> limits)
+	public void setLimits(List<TransactionLimitBean> limits)
 	{
 		this.limits = limits;
 	}
@@ -93,5 +95,15 @@ public class SubscriptionInfoBean implements Serializable
 		
 		limits.add(ab);
 	}
+	public String getClientId()
+	{
+		return clientId;
+	}
+	public void setClientId(String clientId)
+	{
+		this.clientId = clientId;
+	}
+	
+	
 
 }

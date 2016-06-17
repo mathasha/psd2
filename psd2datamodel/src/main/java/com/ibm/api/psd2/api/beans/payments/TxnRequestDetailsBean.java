@@ -5,6 +5,7 @@ import java.util.Date;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ibm.api.psd2.api.beans.ChallengeBean;
 
 public class TxnRequestDetailsBean implements Serializable
 {
@@ -21,7 +22,7 @@ public class TxnRequestDetailsBean implements Serializable
 	String status;
 	Date start_date;
 	Date end_date;
-	private TxnChallengeBean challenge;
+	private ChallengeBean challenge;
 	private TxnChargeBean charge;
 	
 	public String getId()
@@ -88,11 +89,11 @@ public class TxnRequestDetailsBean implements Serializable
 	{
 		this.end_date = end_date;
 	}
-	public TxnChallengeBean getChallenge()
+	public ChallengeBean getChallenge()
 	{
 		return challenge;
 	}
-	public void setChallenge(TxnChallengeBean challenge)
+	public void setChallenge(ChallengeBean challenge)
 	{
 		this.challenge = challenge;
 	}
