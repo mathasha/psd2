@@ -12,9 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import com.ibm.psd2.api.common.db.MongoConnection;
+import com.ibm.psd2.api.common.db.MongoDocumentParser;
 import com.ibm.psd2.commons.beans.BankBean;
-import com.ibm.psd2.commons.dao.MongoConnection;
-import com.ibm.psd2.commons.dao.MongoDocumentParser;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 

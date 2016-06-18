@@ -1,4 +1,4 @@
-package com.ibm.psd2.commons.dao;
+package com.ibm.psd2.api.common.db;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

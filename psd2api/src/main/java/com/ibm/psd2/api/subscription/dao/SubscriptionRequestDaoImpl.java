@@ -15,12 +15,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import com.ibm.psd2.api.common.db.MongoConnection;
+import com.ibm.psd2.api.common.db.MongoDocumentParser;
 import com.ibm.psd2.commons.beans.ChallengeBean;
 import com.ibm.psd2.commons.beans.pisp.TxnRequestDetailsBean;
 import com.ibm.psd2.commons.beans.subscription.SubscriptionInfoBean;
 import com.ibm.psd2.commons.beans.subscription.SubscriptionRequestBean;
-import com.ibm.psd2.commons.dao.MongoConnection;
-import com.ibm.psd2.commons.dao.MongoDocumentParser;
 import com.ibm.psd2.commons.utils.UUIDGenerator;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;

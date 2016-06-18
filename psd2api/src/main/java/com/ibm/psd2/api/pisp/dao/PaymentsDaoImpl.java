@@ -17,6 +17,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
 import com.ibm.psd2.api.common.Constants;
+import com.ibm.psd2.api.common.db.MongoConnection;
+import com.ibm.psd2.api.common.db.MongoDocumentParser;
 import com.ibm.psd2.api.pisp.rules.PaymentRules;
 import com.ibm.psd2.commons.beans.ChallengeAnswerBean;
 import com.ibm.psd2.commons.beans.ChallengeBean;
@@ -24,8 +26,6 @@ import com.ibm.psd2.commons.beans.pisp.TxnPartyBean;
 import com.ibm.psd2.commons.beans.pisp.TxnRequestBean;
 import com.ibm.psd2.commons.beans.pisp.TxnRequestDetailsBean;
 import com.ibm.psd2.commons.beans.subscription.SubscriptionInfoBean;
-import com.ibm.psd2.commons.dao.MongoConnection;
-import com.ibm.psd2.commons.dao.MongoDocumentParser;
 import com.ibm.psd2.commons.utils.UUIDGenerator;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;

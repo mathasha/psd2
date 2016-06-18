@@ -1,4 +1,4 @@
-package com.ibm.psd2.commons.dao;
+package com.ibm.psd2.api.common.db;
 
 import java.lang.reflect.Method;
 import java.util.Map.Entry;
