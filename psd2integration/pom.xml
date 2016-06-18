@@ -42,7 +42,7 @@
 
 		<dependency>
 			<groupId>com.ibm.api.psd2</groupId>
-			<artifactId>psd2datamodel</artifactId>
+			<artifactId>psd2commons</artifactId>
 			<version>${psd2.version}</version>
 		</dependency>
 

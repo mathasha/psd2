@@ -11,12 +11,12 @@ import org.apache.storm.topology.base.BaseRichBolt;
 import org.apache.storm.tuple.Tuple;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ibm.api.psd2.api.beans.account.BankAccountDetailsBean;
-import com.ibm.api.psd2.api.beans.payments.TxnRequestDetailsBean;
-import com.ibm.api.psd2.api.beans.transactions.TransactionAccountBean;
-import com.ibm.api.psd2.api.beans.transactions.TransactionBankBean;
-import com.ibm.api.psd2.api.beans.transactions.TransactionBean;
-import com.ibm.api.psd2.api.beans.transactions.TransactionDetailsBean;
+import com.ibm.psd2.commons.beans.aip.BankAccountDetailsBean;
+import com.ibm.psd2.commons.beans.aip.TransactionAccountBean;
+import com.ibm.psd2.commons.beans.aip.TransactionBankBean;
+import com.ibm.psd2.commons.beans.aip.TransactionBean;
+import com.ibm.psd2.commons.beans.aip.TransactionDetailsBean;
+import com.ibm.psd2.commons.beans.pisp.TxnRequestDetailsBean;
 import com.ibm.psd2.integration.ArgumentsContainer;
 import com.ibm.psd2.integration.dao.MongoDao;
 import com.ibm.psd2.integration.dao.MongoDaoImpl;

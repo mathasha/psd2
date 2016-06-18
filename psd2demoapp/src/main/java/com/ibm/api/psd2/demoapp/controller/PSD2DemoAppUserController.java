@@ -16,6 +16,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -121,6 +122,15 @@ public class PSD2DemoAppUserController extends APIController
 		{
 			response = handleException(e, version);
 		}
+		return response;
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/admin/callback", produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody ResponseEntity<String> decodeCode(@RequestParam(value="code") String code, @RequestParam(value="state") String state)
+	{
+		ResponseEntity<String> response;
+		String resp = "{ \"code\": \"" + code + "\", \"state\": \"" + state + "\"}";
+		response = ResponseEntity.ok(resp);
 		return response;
 	}
 	
