@@ -4,6 +4,7 @@ import static com.mongodb.client.model.Filters.eq;
 import static com.mongodb.client.model.Projections.excludeId;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -23,7 +24,7 @@ public class BankDaoImpl implements BankDao
 {
 
 	private static final Logger logger = LogManager.getLogger(BankDaoImpl.class);
-	
+
 	@Autowired
 	private MongoConnection conn;
 
@@ -34,14 +35,13 @@ public class BankDaoImpl implements BankDao
 	private String banks;
 
 	@Override
-	public BankBean getBankDetails(String bankId)
-			throws Exception
+	public BankBean getBankDetails(String bankId) throws Exception
 	{
 		logger.info("bankId = " + bankId);
 		MongoCollection<Document> coll = conn.getDB().getCollection(banks);
 		FindIterable<Document> iterable = coll.find(eq("id", bankId)).projection(excludeId());
 		BankBean b = null;
-		
+
 		for (Document document : iterable)
 		{
 			if (document != null)
@@ -49,18 +49,17 @@ public class BankDaoImpl implements BankDao
 				logger.info("message = " + document.toJson());
 				b = mdp.parse(document, new BankBean());
 			}
-		}		
+		}
 		return b;
 	}
-	
+
 	@Override
-	public ArrayList<BankBean> getBanks()
-			throws Exception
+	public List<BankBean> getBanks() throws Exception
 	{
 		MongoCollection<Document> coll = conn.getDB().getCollection(banks);
 		FindIterable<Document> iterable = coll.find().projection(excludeId());
 		ArrayList<BankBean> b = null;
-		
+
 		for (Document document : iterable)
 		{
 			if (document != null)
@@ -72,7 +71,16 @@ public class BankDaoImpl implements BankDao
 				logger.info("message = " + document.toJson());
 				b.add(mdp.parse(document, new BankBean()));
 			}
-		}		
+		}
+		return b;
+	}
+
+	@Override
+	public BankBean createBank(BankBean b) throws Exception
+	{
+		MongoCollection<Document> coll = conn.getDB().getCollection(banks);
+		coll.insertOne(mdp.format(b));
+
 		return b;
 	}
 }

@@ -15,9 +15,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ibm.psd2.api.aip.controller.BankAccountController;
 import com.ibm.psd2.api.aip.dao.BankAccountDao;
+import com.ibm.psd2.api.aip.dao.BankDao;
 import com.ibm.psd2.api.aip.dao.TransactionDao;
 import com.ibm.psd2.api.subscription.dao.SubscriptionDao;
 import com.ibm.psd2.api.subscription.dao.SubscriptionRequestDao;
+import com.ibm.psd2.commons.beans.BankBean;
 import com.ibm.psd2.commons.beans.SimpleResponseBean;
 import com.ibm.psd2.commons.beans.aip.BankAccountDetailsBean;
 import com.ibm.psd2.commons.beans.subscription.SubscriptionRequestBean;
@@ -29,7 +31,10 @@ public class AdminController
 	private static final Logger logger = LogManager.getLogger(BankAccountController.class);
 
 	@Autowired
-	BankAccountDao bad;
+	BankAccountDao badao;
+	
+	@Autowired
+	BankDao bdao;
 
 	@Autowired
 	SubscriptionDao sdao;
@@ -44,6 +49,34 @@ public class AdminController
 	private String version;
 
 	
+	@RequestMapping(method = RequestMethod.POST, value = "/admin/bank", produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody ResponseEntity<SimpleResponseBean> createBank(@RequestBody BankBean b)
+	{
+		ResponseEntity<SimpleResponseBean> response;
+		SimpleResponseBean srb = new SimpleResponseBean();
+		try
+		{
+			if (b == null)
+			{
+				throw new IllegalArgumentException("No Bank Specified");
+			}
+
+			logger.info("BankBean = " + b.toString());
+
+			bdao.createBank(b);
+			
+			srb.setResponseCode(SimpleResponseBean.CODE_SUCCESS);
+			response = ResponseEntity.ok(srb);
+		} catch (Exception e)
+		{
+			logger.error(e);
+			srb.setResponseCode(SimpleResponseBean.CODE_ERROR);
+			srb.setResponseMessage(e.getMessage());
+			response = ResponseEntity.badRequest().body(srb);
+		}
+		return response;
+	}
+
 	
 	@RequestMapping(method = RequestMethod.POST, value = "/admin/account", produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody ResponseEntity<SimpleResponseBean> createAccount(@RequestBody BankAccountDetailsBean b)
@@ -59,7 +92,7 @@ public class AdminController
 
 			logger.info("BankAccountDetailsBean = " + b.toString());
 
-			bad.createBankAccountDetails(b);
+			badao.createBankAccountDetails(b);
 			
 			srb.setResponseCode(SimpleResponseBean.CODE_SUCCESS);
 			response = ResponseEntity.ok(srb);
@@ -73,7 +106,7 @@ public class AdminController
 		return response;
 	}
 
-	@RequestMapping(method = RequestMethod.POST, value = "/admin/subscription/{id}", produces = MediaType.ALL_VALUE)
+	@RequestMapping(method = RequestMethod.POST, value = "/admin/subscription/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody ResponseEntity<SimpleResponseBean> createSubscription(@PathVariable("id") String id)
 	{
 		ResponseEntity<SimpleResponseBean> response;
