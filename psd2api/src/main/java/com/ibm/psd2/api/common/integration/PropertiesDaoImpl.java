@@ -1,4 +1,4 @@
-package com.ibm.psd2.commons.dao;
+package com.ibm.psd2.api.common.integration;
 
 import static com.mongodb.client.model.Filters.eq;
 import static com.mongodb.client.model.Projections.excludeId;
@@ -13,6 +13,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import com.ibm.psd2.commons.beans.KafkaProperties;
+import com.ibm.psd2.commons.dao.MongoConnection;
+import com.ibm.psd2.commons.dao.MongoDocumentParser;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 
