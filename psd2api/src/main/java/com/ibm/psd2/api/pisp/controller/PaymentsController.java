@@ -157,7 +157,6 @@ public class PaymentsController extends APIController
 		return response;
 	}
 
-	// /banks/psd201-bank-x--uk/accounts/007007007007007007007/owner/transaction-requests
 	@PreAuthorize("#oauth2.hasScope('write')")
 	@RequestMapping(method = RequestMethod.GET, value = "banks/{bankId}/accounts/{accountId}/{viewId}/transaction-requests", produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody ResponseEntity<List<TxnRequestDetailsBean>> getTransactionRequests(

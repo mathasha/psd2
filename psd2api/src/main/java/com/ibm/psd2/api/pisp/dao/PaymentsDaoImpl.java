@@ -49,13 +49,13 @@ public class PaymentsDaoImpl implements PaymentsDao
 	private String payments;
 
 	@Override
-	public TxnRequestDetailsBean createTransactionRequest(SubscriptionInfoBean sib, TxnRequestBean trb, TxnPartyBean payee, String txnType) throws Exception
+	public TxnRequestDetailsBean createTransactionRequest(SubscriptionInfoBean sib, TxnRequestBean trb,
+			TxnPartyBean payee, String txnType) throws Exception
 	{
 		if (!pr.isTransactionTypeAllowed(sib, txnType))
 		{
-			throw new IllegalArgumentException(
-					"Invalid Transaction Type Specified. Available Values are: " + StringUtils
-							.collectionToCommaDelimitedString(sib.getTransaction_request_types()));
+			throw new IllegalArgumentException("Invalid Transaction Type Specified. Available Values are: "
+					+ StringUtils.collectionToCommaDelimitedString(sib.getTransaction_request_types()));
 		}
 
 		TxnRequestDetailsBean t = new TxnRequestDetailsBean();
@@ -67,8 +67,7 @@ public class PaymentsDaoImpl implements PaymentsDao
 			logger.info("Within Specified Limit. Hence Not Challenging the Request");
 			t.setChallenge(null);
 			t.setStatus(TxnRequestDetailsBean.TXN_STATUS_PENDING);
-		}
-		else
+		} else
 		{
 			logger.info("Amount Greater than specified limit. Hence creating a challenge");
 			ChallengeBean challenge = new ChallengeBean();
@@ -91,22 +90,18 @@ public class PaymentsDaoImpl implements PaymentsDao
 	}
 
 	@Override
-	public TxnRequestDetailsBean answerTransactionRequestChallenge(String username, String viewId,
-			String bankId, String accountId, String txnType, String txnReqId,
-			ChallengeAnswerBean t) throws Exception
+	public TxnRequestDetailsBean answerTransactionRequestChallenge(String username, String viewId, String bankId,
+			String accountId, String txnType, String txnReqId, ChallengeAnswerBean t) throws Exception
 	{
 		MongoCollection<Document> coll = conn.getDB().getCollection(payments);
-		FindIterable<Document> iterable = coll
-				.find(and(eq("from.account_id", accountId), eq("from.bank_id", bankId),
-						eq("type", txnType), eq("id", txnReqId), eq("challenge.id", t.getId()))).projection(excludeId());
+		FindIterable<Document> iterable = coll.find(and(eq("from.account_id", accountId), eq("from.bank_id", bankId),
+				eq("type", txnType), eq("id", txnReqId), eq("challenge.id", t.getId()))).projection(excludeId());
 
 		TxnRequestDetailsBean tdb = null;
-		for (Document document : iterable)
+		Document document = iterable.first();
+		if (document != null)
 		{
-			if (document != null)
-			{
-				tdb = mdp.parse(document, new TxnRequestDetailsBean());
-			}
+			tdb = mdp.parse(document, new TxnRequestDetailsBean());
 		}
 
 		if (tdb == null)
@@ -116,13 +111,12 @@ public class PaymentsDaoImpl implements PaymentsDao
 
 		if (!pr.validateTxnChallengeAnswer(t, username, accountId, bankId))
 		{
-			throw new IllegalArgumentException(
-					"Incorrect Transaction Request Challenge Answer Specified");
+			throw new IllegalArgumentException("Incorrect Transaction Request Challenge Answer Specified");
 		}
 
 		UpdateResult update = coll.updateOne(new Document("id", txnReqId),
 				new Document("$set", new Document("status", TxnRequestDetailsBean.TXN_STATUS_PENDING)));
-		
+
 		if (update.getModifiedCount() != 0)
 		{
 			tdb.setStatus(TxnRequestDetailsBean.TXN_STATUS_PENDING);
@@ -133,12 +127,13 @@ public class PaymentsDaoImpl implements PaymentsDao
 	}
 
 	@Override
-	public List<TxnRequestDetailsBean> getTransactionRequests(String username, String viewId,
-			String accountId, String bankId) throws Exception
+	public List<TxnRequestDetailsBean> getTransactionRequests(String username, String viewId, String accountId,
+			String bankId) throws Exception
 	{
 		MongoCollection<Document> coll = conn.getDB().getCollection(payments);
-		FindIterable<Document> iterable = coll
-				.find(and(eq("from.account_id", accountId), eq("from.bank_id", bankId))).projection(excludeId());;
+		FindIterable<Document> iterable = coll.find(and(eq("from.account_id", accountId), eq("from.bank_id", bankId)))
+				.projection(excludeId());
+		;
 
 		List<TxnRequestDetailsBean> txns = null;
 

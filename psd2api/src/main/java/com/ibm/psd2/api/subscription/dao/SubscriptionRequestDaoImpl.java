@@ -15,8 +15,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import com.ibm.psd2.api.common.Constants;
 import com.ibm.psd2.api.common.db.MongoConnection;
 import com.ibm.psd2.api.common.db.MongoDocumentParser;
+import com.ibm.psd2.commons.beans.ChallengeAnswerBean;
 import com.ibm.psd2.commons.beans.ChallengeBean;
 import com.ibm.psd2.commons.beans.pisp.TxnRequestDetailsBean;
 import com.ibm.psd2.commons.beans.subscription.SubscriptionInfoBean;
@@ -41,12 +43,12 @@ public class SubscriptionRequestDaoImpl implements SubscriptionRequestDao
 	private String subscriptionRequests;
 
 	@Override
-	public SubscriptionRequestBean getSubscriptionRequestById(String id) throws Exception
+	public SubscriptionRequestBean getSubscriptionRequestByIdAndChallenge(String id, ChallengeAnswerBean cab) throws Exception
 	{
 		logger.info("id = " + id);
 		MongoCollection<Document> coll = conn.getDB().getCollection(subscriptionRequests);
 		FindIterable<Document> iterable = coll.find(
-				and(eq("id", id)))
+				and(eq("id", id), eq("challenge.id", cab.getId())))
 				.projection(excludeId());
 		
 		SubscriptionRequestBean s = null;
@@ -72,7 +74,7 @@ public class SubscriptionRequestDaoImpl implements SubscriptionRequestDao
 		ChallengeBean c = new ChallengeBean();
 		c.setId(UUIDGenerator.generateUUID());
 		c.setChallenge_type("NEW_SUBSCRIPTION");
-		c.setAllowed_attempts(3);
+		c.setAllowed_attempts(Constants.CHALLENGE_MAX_ATTEMPTS);
 		
 		s.setChallenge(c);
 		
