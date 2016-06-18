@@ -1,6 +1,6 @@
 package com.ibm.psd2.api.aip.controller;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -29,12 +29,12 @@ public class BankController extends APIController
 
 	@PreAuthorize("#oauth2.hasScope('write')")
 	@RequestMapping(method = RequestMethod.GET, value = "/banks", produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody ResponseEntity<ArrayList<BankBean>> getBanks()
+	public @ResponseBody ResponseEntity<List<BankBean>> getBanks()
 	{
-		ResponseEntity<ArrayList<BankBean>> response;
+		ResponseEntity<List<BankBean>> response;
 		try
 		{
-			ArrayList<BankBean> b = bdao.getBanks();
+			List<BankBean> b = bdao.getBanks();
 			response = ResponseEntity.ok(b);
 		}
 		catch (Exception ex)
