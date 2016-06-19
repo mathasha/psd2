@@ -4,6 +4,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.ibm.psd2.commons.beans.subscription.SubscriptionInfoBean;
+import com.ibm.psd2.commons.beans.subscription.ViewIdBean;
 
 public abstract class APIController
 {
@@ -11,7 +12,7 @@ public abstract class APIController
 
 	protected boolean validateSubscription(SubscriptionInfoBean s)
 	{
-		if (s!= null && SubscriptionInfoBean.STATUS_ACTIVE.equals(s.getStatus()))
+		if (s != null && SubscriptionInfoBean.STATUS_ACTIVE.equals(s.getStatus()))
 		{
 			return true;
 		}
@@ -19,15 +20,13 @@ public abstract class APIController
 		return false;
 	}
 
-	protected boolean validateSubscription(SubscriptionInfoBean s, String viewId)
+	protected boolean validateSubscription(SubscriptionInfoBean s, ViewIdBean view)
 	{
 		logger.info("Method Arguments = " + s);
-		logger.info("Method Arguments = " + viewId);
-		
-		logger.info("s.getStatus() = " + SubscriptionInfoBean.STATUS_ACTIVE.equals(s.getStatus()));
-		logger.info("s.contains() = " + s.getViewIds().contains(viewId));
-		if (s != null && SubscriptionInfoBean.STATUS_ACTIVE.equals(s.getStatus()) && s.getViewIds() != null
-				&& !s.getViewIds().isEmpty() && s.getViewIds().contains(viewId))
+		logger.info("Method Arguments = " + view);
+
+		if (s != null && view != null && SubscriptionInfoBean.STATUS_ACTIVE.equals(s.getStatus())
+				&& s.getViewIds() != null && !s.getViewIds().isEmpty() && s.getViewIds().contains(view))
 		{
 			return true;
 		}

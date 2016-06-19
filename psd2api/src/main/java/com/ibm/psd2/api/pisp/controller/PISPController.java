@@ -66,9 +66,12 @@ public class PISPController extends APIController
 			OAuth2Authentication oauth2 = (OAuth2Authentication) auth;
 			String user = (String) auth.getPrincipal();
 
+			ViewIdBean specifiedView = new ViewIdBean();
+			specifiedView.setId(viewId);
+
 			SubscriptionInfoBean sib = sdao.getSubscriptionInfo(user, oauth2.getOAuth2Request().getClientId(),
 					accountId, bankId);
-			if (!validateSubscription(sib, viewId))
+			if (!validateSubscription(sib, specifiedView))
 			{
 				throw new IllegalAccessException("Not Subscribed");
 			}
@@ -78,9 +81,6 @@ public class PISPController extends APIController
 			{
 				throw new IllegalArgumentException("Invalid Transaction Request");
 			}
-
-			ViewIdBean specifiedView = new ViewIdBean();
-			specifiedView.setId(viewId);
 
 			TxnPartyBean payee = new TxnPartyBean(bankId, accountId);
 			TxnRequestDetailsBean t = pdao.createTransactionRequest(sib, trb, payee, txnType);
@@ -111,16 +111,15 @@ public class PISPController extends APIController
 		{
 			OAuth2Authentication oauth2 = (OAuth2Authentication) auth;
 			String user = (String) auth.getPrincipal();
+			ViewIdBean specifiedView = new ViewIdBean();
+			specifiedView.setId(viewId);
 
 			SubscriptionInfoBean sib = sdao.getSubscriptionInfo(user, oauth2.getOAuth2Request().getClientId(),
 					accountId, bankId);
-			if (!validateSubscription(sib, viewId))
+			if (!validateSubscription(sib, specifiedView))
 			{
 				throw new IllegalAccessException("Not Subscribed");
 			}
-
-			ViewIdBean specifiedView = new ViewIdBean();
-			specifiedView.setId(viewId);
 
 			TxnRequestDetailsBean tdb = pdao.answerTransactionRequestChallenge(user, viewId, bankId, accountId, txnType,
 					txnReqId, t);
@@ -150,10 +149,13 @@ public class PISPController extends APIController
 		{
 			OAuth2Authentication oauth2 = (OAuth2Authentication) auth;
 			String user = (String) auth.getPrincipal();
+			ViewIdBean specifiedView = new ViewIdBean();
+			specifiedView.setId(viewId);
+
 			SubscriptionInfoBean sib = sdao.getSubscriptionInfo(user, oauth2.getOAuth2Request().getClientId(),
 					accountId, bankId);
 
-			if (!validateSubscription(sib, viewId))
+			if (!validateSubscription(sib, specifiedView))
 			{
 				throw new IllegalAccessException("Not Subscribed");
 			}
@@ -178,10 +180,12 @@ public class PISPController extends APIController
 		{
 			OAuth2Authentication oauth2 = (OAuth2Authentication) auth;
 			String user = (String) auth.getPrincipal();
+			ViewIdBean specifiedView = new ViewIdBean();
+			specifiedView.setId(viewId);
 
 			SubscriptionInfoBean sib = sdao.getSubscriptionInfo(user, oauth2.getOAuth2Request().getClientId(),
 					accountId, bankId);
-			if (!validateSubscription(sib, viewId))
+			if (!validateSubscription(sib, specifiedView))
 			{
 				throw new IllegalAccessException("Not Subscribed");
 			}
