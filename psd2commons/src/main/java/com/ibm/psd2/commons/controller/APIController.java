@@ -23,6 +23,9 @@ public abstract class APIController
 	{
 		logger.info("Method Arguments = " + s);
 		logger.info("Method Arguments = " + viewId);
+		
+		logger.info("s.getStatus() = " + SubscriptionInfoBean.STATUS_ACTIVE.equals(s.getStatus()));
+		logger.info("s.contains() = " + s.getViewIds().contains(viewId));
 		if (s != null && SubscriptionInfoBean.STATUS_ACTIVE.equals(s.getStatus()) && s.getViewIds() != null
 				&& !s.getViewIds().isEmpty() && s.getViewIds().contains(viewId))
 		{
