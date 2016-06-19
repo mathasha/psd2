@@ -58,7 +58,7 @@ public class PaymentsController extends APIController
 	public @ResponseBody ResponseEntity<TxnRequestDetailsBean> createTransactionRequest(
 			@PathVariable("bankId") String bankId, @PathVariable("accountId") String accountId,
 			@PathVariable("viewId") String viewId, @PathVariable("txnType") String txnType,
-			@RequestBody TxnRequestBean trb, Authentication auth)
+			@RequestBody(required=true) TxnRequestBean trb, Authentication auth)
 	{
 		ResponseEntity<TxnRequestDetailsBean> response;
 		try
@@ -72,6 +72,16 @@ public class PaymentsController extends APIController
 			if (sib == null || !sib.getViewIds().contains(specifiedView))
 			{
 				throw new IllegalAccessException("Not Subscribed");
+			}
+			
+			if (trb == null)
+			{
+				throw new IllegalArgumentException("Transaction Request can't be empty");
+			}
+			
+			if (trb.getTo() == null || (accountId.equals(trb.getTo().getAccount_id()) && bankId.equals(trb.getTo().getBank_id())))
+			{
+				throw new IllegalArgumentException("Invalid Transaction Request");
 			}
 						
 			TxnPartyBean payee = new TxnPartyBean(bankId, accountId);
