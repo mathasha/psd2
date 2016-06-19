@@ -58,32 +58,30 @@ public class PaymentsController extends APIController
 	public @ResponseBody ResponseEntity<TxnRequestDetailsBean> createTransactionRequest(
 			@PathVariable("bankId") String bankId, @PathVariable("accountId") String accountId,
 			@PathVariable("viewId") String viewId, @PathVariable("txnType") String txnType,
-			@RequestBody(required=true) TxnRequestBean trb, Authentication auth)
+			@RequestBody(required = true) TxnRequestBean trb, Authentication auth)
 	{
 		ResponseEntity<TxnRequestDetailsBean> response;
 		try
 		{
-			OAuth2Authentication oauth2 = (OAuth2Authentication)auth;
+			OAuth2Authentication oauth2 = (OAuth2Authentication) auth;
 			String user = (String) auth.getPrincipal();
-			ViewIdBean specifiedView = new ViewIdBean();
-			specifiedView.setId(viewId);
 
-			SubscriptionInfoBean sib = sdao.getSubscriptionInfo(user, oauth2.getOAuth2Request().getClientId(), accountId, bankId);
-			if (sib == null || !sib.getViewIds().contains(specifiedView))
+			SubscriptionInfoBean sib = sdao.getSubscriptionInfo(user, oauth2.getOAuth2Request().getClientId(),
+					accountId, bankId);
+			if (!validateSubscription(sib, viewId))
 			{
 				throw new IllegalAccessException("Not Subscribed");
 			}
-			
-			if (trb == null)
-			{
-				throw new IllegalArgumentException("Transaction Request can't be empty");
-			}
-			
-			if (trb.getTo() == null || (accountId.equals(trb.getTo().getAccount_id()) && bankId.equals(trb.getTo().getBank_id())))
+
+			if (trb == null || trb.getTo() == null
+					|| (accountId.equals(trb.getTo().getAccount_id()) && bankId.equals(trb.getTo().getBank_id())))
 			{
 				throw new IllegalArgumentException("Invalid Transaction Request");
 			}
-						
+
+			ViewIdBean specifiedView = new ViewIdBean();
+			specifiedView.setId(viewId);
+
 			TxnPartyBean payee = new TxnPartyBean(bankId, accountId);
 			TxnRequestDetailsBean t = pdao.createTransactionRequest(sib, trb, payee, txnType);
 
@@ -111,16 +109,18 @@ public class PaymentsController extends APIController
 		ResponseEntity<TxnRequestDetailsBean> response;
 		try
 		{
-			OAuth2Authentication oauth2 = (OAuth2Authentication)auth;
+			OAuth2Authentication oauth2 = (OAuth2Authentication) auth;
 			String user = (String) auth.getPrincipal();
-			ViewIdBean specifiedView = new ViewIdBean();
-			specifiedView.setId(viewId);
 
-			SubscriptionInfoBean sib = sdao.getSubscriptionInfo(user, oauth2.getOAuth2Request().getClientId(), accountId, bankId);
-			if (sib == null || !sib.getViewIds().contains(specifiedView))
+			SubscriptionInfoBean sib = sdao.getSubscriptionInfo(user, oauth2.getOAuth2Request().getClientId(),
+					accountId, bankId);
+			if (!validateSubscription(sib, viewId))
 			{
 				throw new IllegalAccessException("Not Subscribed");
 			}
+
+			ViewIdBean specifiedView = new ViewIdBean();
+			specifiedView.setId(viewId);
 
 			TxnRequestDetailsBean tdb = pdao.answerTransactionRequestChallenge(user, viewId, bankId, accountId, txnType,
 					txnReqId, t);
@@ -148,16 +148,16 @@ public class PaymentsController extends APIController
 		ResponseEntity<List<TransactionRequestTypeBean>> response;
 		try
 		{
-			OAuth2Authentication oauth2 = (OAuth2Authentication)auth;
+			OAuth2Authentication oauth2 = (OAuth2Authentication) auth;
 			String user = (String) auth.getPrincipal();
-			ViewIdBean specifiedView = new ViewIdBean();
-			specifiedView.setId(viewId);
+			SubscriptionInfoBean sib = sdao.getSubscriptionInfo(user, oauth2.getOAuth2Request().getClientId(),
+					accountId, bankId);
 
-			SubscriptionInfoBean sib = sdao.getSubscriptionInfo(user, oauth2.getOAuth2Request().getClientId(), accountId, bankId);
-			if (sib == null || !sib.getViewIds().contains(specifiedView))
+			if (!validateSubscription(sib, viewId))
 			{
 				throw new IllegalAccessException("Not Subscribed");
 			}
+
 			response = ResponseEntity.ok(sib.getTransaction_request_types());
 		} catch (Exception e)
 		{
@@ -176,13 +176,12 @@ public class PaymentsController extends APIController
 		ResponseEntity<List<TxnRequestDetailsBean>> response;
 		try
 		{
-			OAuth2Authentication oauth2 = (OAuth2Authentication)auth;
+			OAuth2Authentication oauth2 = (OAuth2Authentication) auth;
 			String user = (String) auth.getPrincipal();
-			ViewIdBean specifiedView = new ViewIdBean();
-			specifiedView.setId(viewId);
 
-			SubscriptionInfoBean sib = sdao.getSubscriptionInfo(user, oauth2.getOAuth2Request().getClientId(), accountId, bankId);
-			if (sib == null || !sib.getViewIds().contains(specifiedView))
+			SubscriptionInfoBean sib = sdao.getSubscriptionInfo(user, oauth2.getOAuth2Request().getClientId(),
+					accountId, bankId);
+			if (!validateSubscription(sib, viewId))
 			{
 				throw new IllegalAccessException("Not Subscribed");
 			}
@@ -196,5 +195,4 @@ public class PaymentsController extends APIController
 		}
 		return response;
 	}
-
 }
