@@ -31,9 +31,9 @@ import com.ibm.psd2.commons.beans.subscription.ViewIdBean;
 import com.ibm.psd2.commons.controller.APIController;
 
 @RestController
-public class PaymentsController extends APIController
+public class PISPController extends APIController
 {
-	private static final Logger logger = LogManager.getLogger(PaymentsController.class);
+	private static final Logger logger = LogManager.getLogger(PISPController.class);
 
 	@Autowired
 	PaymentsDao pdao;

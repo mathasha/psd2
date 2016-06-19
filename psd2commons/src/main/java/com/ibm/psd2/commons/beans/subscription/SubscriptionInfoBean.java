@@ -6,7 +6,6 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @JsonInclude(value = Include.NON_EMPTY)
@@ -140,7 +139,7 @@ public class SubscriptionInfoBean implements Serializable
 		try
 		{
 			return mapper.writeValueAsString(this);
-		} catch (JsonProcessingException e)
+		} catch (Exception e)
 		{
 			e.printStackTrace();
 		}

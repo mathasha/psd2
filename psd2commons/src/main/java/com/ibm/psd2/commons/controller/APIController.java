@@ -21,6 +21,8 @@ public abstract class APIController
 
 	protected boolean validateSubscription(SubscriptionInfoBean s, String viewId)
 	{
+		logger.info("Method Arguments = " + s);
+		logger.info("Method Arguments = " + viewId);
 		if (s != null && SubscriptionInfoBean.STATUS_ACTIVE.equals(s.getStatus()) && s.getViewIds() != null
 				&& !s.getViewIds().isEmpty() && s.getViewIds().contains(viewId))
 		{
